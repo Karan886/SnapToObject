@@ -7,11 +7,13 @@ def getNewCoords(xoffset, yoffset, zoffset, snapAxis):
     
     newLocationVector = [objTwo.location.x + xoffset, objTwo.location.y + yoffset, objTwo.location.z + zoffset]
     if (snapAxis == "X"):
-        newLocationVector[0] += objTwo.scale.x
+        newLocationVector[0] += objTwo.scale.x * 2
     elif(snapAxis == "Y"):
-        newLocationVector[1] += bjTwo.scale.y 
+        newLocationVector[1] += bjTwo.scale.y * 2 
     elif(snapAxis == "Z"):
-         newLocationVector[2] += objTwo.scale.z
+         newLocationVector[2] += objTwo.scale.z * 2
+         
+    objOne.location = newLocationVector
 
 class SnapToObject(bpy.types.Operator):
     bl_idname = "view3d.snap_to_object"
@@ -20,9 +22,9 @@ class SnapToObject(bpy.types.Operator):
     # Check if user has selected exactly 2 objects
     @classmethod
     def poll(self, context):
-        return len(context.selected_objects)
+        return len(context.selected_objects) == 2
     def invoke(self, context, event):
-        newLocationVector(0, 0, 0, "Z")
+        getNewCoords(0, 0, 0, "Z")
         return {"FINISHED"}
 
 # Activate operator for use in blender
