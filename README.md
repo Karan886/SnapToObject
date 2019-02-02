@@ -1,1 +1,1 @@
-# Blender-MeshName-AddOn
+# Snap To Object Add-On
