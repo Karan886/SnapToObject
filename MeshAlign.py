@@ -9,6 +9,12 @@ from bpy import props
 def isSelectedValid(objOne, objTwo):
     return objOne.type == "MESH" and objTwo.type == "MESH"
 
+def getSecondObject():
+    list = context.selected_objects
+    if (list[0].name == context.active_object.name):
+        return list[1]
+    return list[0]
+
 def setCursorToFloor(obj):
     # Begin by setting cursor to center of mass
     obj.select = True
@@ -59,7 +65,7 @@ class SnapToObject(bpy.types.Operator):
     # Check if user has selected exactly 2 objects
     @classmethod
     def poll(self, context):
-        return len(context.selected_objects) > 1
+        return len(context.selected_objects) == 2
     
     def invoke(self, context, event):
         return context.window_manager.invoke_props_dialog(self)
@@ -70,26 +76,19 @@ class SnapToObject(bpy.types.Operator):
         zoffset = self.axesOffset[2]
         
         i = 0
-        listOfActiveObjects = context.selected_objects
-        while(i < len(listOfActiveObjects) - 1):
-            j = i + 1
-            objOne = listOfActiveObjects[i]
-            objTwo = listOfActiveObjects[j]
-            
-            setCursorToFloor(objOne)
-            setCursorToFloor(objTwo)
-            
-            if(isSelectedValid(objOne, objTwo)):
+        
+        objOne = context.active_object
+        objTwo = getSecondObject()
+        
+        if(isSelectedValid(objOne, objTwo)):
                 alignMesh({
                     "xoffset":xoffset, 
                     "yoffset":yoffset, 
                     "zoffset":zoffset, 
                     "snapAxis":self.axesEnum 
                 }, objOne, objTwo)
-            else:
+        else:
                 self.report({"WARNING"}, "Only aligned objects that are of type mesh.")
-                
-            i += 1
             
         return {"FINISHED"}
 
