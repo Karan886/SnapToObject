@@ -73,9 +73,8 @@ class SnapToObject(bpy.types.Operator):
         listOfActiveObjects = context.selected_objects
         while(i < len(listOfActiveObjects) - 1):
             j = i + 1
-            
-            objOne = context.selected_objects[i]
-            objTwo = context.selected_objects[j]
+            objOne = listOfActiveObjects[i]
+            objTwo = listOfActiveObjects[j]
             
             setCursorToFloor(objOne)
             setCursorToFloor(objTwo)
