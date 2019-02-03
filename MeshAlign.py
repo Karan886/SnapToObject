@@ -1,9 +1,27 @@
+#This AddOn helps align/organize a collection of scene meshes so that the artist 
+#doesn't have to do all the work. Note: the way objects are positioned depends on where the origin is set.
+
 import bpy
+import mathutils
 from bpy import context
 from bpy import props
 
 def isSelectedValid(objOne, objTwo):
     return objOne.type == "MESH" and objTwo.type == "MESH"
+
+def setCursorToFloor(obj):
+    # Begin by setting cursor to center of mass
+    obj.select = True
+    bpy.ops.object.origin_set(type = "ORIGIN_CENTER_OF_MASS")
+    
+    # Calculate where the floor of the mesh is located and set the 3d cursor to that location
+    offset = mathutils.Vector((0, 0, obj.dimensions.z/2))
+    objFloor = obj.location - offset
+    context.scene.cursor_location = objFloor
+    
+    # Set origin of the mesh to its floor
+    bpy.ops.object.origin_set(type = "ORIGIN_CURSOR")
+    obj.select = False
 
 def alignMesh(options, objOne, objTwo):
     xoffset = options["xoffset"]
@@ -15,7 +33,7 @@ def alignMesh(options, objOne, objTwo):
     if (snapAxis == "X"):
         newLocationVector[0] += objOne.dimensions[0]
     elif(snapAxis == "Y"):
-        newLocationVector[1] += objOne.dimensions[1] 
+        newLocationVector[1] += objOne.dimensions[1]
     elif(snapAxis == "Z"):
          newLocationVector[2] += objOne.dimensions[2]
          
@@ -52,10 +70,16 @@ class SnapToObject(bpy.types.Operator):
         zoffset = self.axesOffset[2]
         
         i = 0
-        while(i < len(context.selected_objects) - 1):
+        listOfActiveObjects = context.selected_objects
+        while(i < len(listOfActiveObjects) - 1):
             j = i + 1
+            
             objOne = context.selected_objects[i]
             objTwo = context.selected_objects[j]
+            
+            setCursorToFloor(objOne)
+            setCursorToFloor(objTwo)
+            
             if(isSelectedValid(objOne, objTwo)):
                 alignMesh({
                     "xoffset":xoffset, 
