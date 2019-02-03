@@ -2,8 +2,6 @@ import bpy
 from bpy import context
 from bpy import props
 
-print("----------")
-
 def isSelectedValid():
     for obj in context.selected_objects:
         if obj.type != "MESH":
