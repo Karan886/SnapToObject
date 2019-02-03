@@ -63,10 +63,11 @@ class SnapToObject(bpy.types.Operator):
                     "zoffset":zoffset, 
                     "snapAxis":self.axesEnum 
                 }, objOne, objTwo)
+            else:
+                self.report({"WARNING"}, "Only aligned objects that are of type mesh.")
                 
             i += 1
             
-        #alignMesh(xoffset, yoffset, zoffset, self.axesEnum)
         return {"FINISHED"}
 
 # Activate operator for use in blender
