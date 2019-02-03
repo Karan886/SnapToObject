@@ -2,12 +2,13 @@ import bpy
 from bpy import context
 from bpy import props
 
+print("----------")
+
 def isSelectedValid():
-    
     for obj in context.selected_objects:
-        print(obj.name + ":" + obj.type)
-        
-        return 0
+        if obj.type != "MESH":
+            return 0
+    return 1
     
 def alignMesh(xoffset, yoffset, zoffset, snapAxis):
     objOne = context.selected_objects[0]
@@ -28,7 +29,7 @@ class SnapToObject(bpy.types.Operator):
     bl_label = "Snap To Object" 
     
     axesEnum = props.EnumProperty(
-        items = (("X", "x", ""), ("Y", "y", ""), ("Z", "z", "")),
+        items = (("X", "x", "xoffset"), ("Y", "y", "yoffset"), ("Z", "z", "zoffset")),
         name = "Snap Axis:",
         default = "X"
     )
@@ -46,8 +47,7 @@ class SnapToObject(bpy.types.Operator):
         return len(context.selected_objects) == 2
     
     def invoke(self, context, event):
-        #print(isSelectedValid())
-        if (isSelectedValid() == 0):
+        if (isSelectedValid()):
             return context.window_manager.invoke_props_dialog(self, width = 400)
         else:
             self.report({"INFO"}, "All selected objects must be of type MESH")
