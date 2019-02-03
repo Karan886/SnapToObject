@@ -2,7 +2,14 @@ import bpy
 from bpy import context
 from bpy import props
 
-def getNewCoords(xoffset, yoffset, zoffset, snapAxis):
+def isSelectedValid():
+    
+    for obj in context.selected_objects:
+        print(obj.name + ":" + obj.type)
+        
+        return 0
+    
+def alignMesh(xoffset, yoffset, zoffset, snapAxis):
     objOne = context.selected_objects[0]
     objTwo = context.selected_objects[1]
     
@@ -10,30 +17,22 @@ def getNewCoords(xoffset, yoffset, zoffset, snapAxis):
     if (snapAxis == "X"):
         newLocationVector[0] += objTwo.scale.x * 2
     elif(snapAxis == "Y"):
-        newLocationVector[1] += bjTwo.scale.y * 2 
+        newLocationVector[1] += objTwo.scale.y * 2 
     elif(snapAxis == "Z"):
          newLocationVector[2] += objTwo.scale.z * 2
          
     objOne.location = newLocationVector
 
-def updateEnumValue(self, value):
-    self.axesEnum = value
-def getEnumValue(self):
-    return self.axesEnum
-def setEnumValue(self, value):
-    self.axesEnum = value
-
 class SnapToObject(bpy.types.Operator):
     bl_idname = "view3d.snap_to_object"
-    bl_label = "Snap To Object"
+    bl_label = "Snap To Object" 
     
-    axesEnum = ""
-    
-    axesEnumProperty = props.EnumProperty(
+    axesEnum = props.EnumProperty(
         items = (("X", "x", ""), ("Y", "y", ""), ("Z", "z", "")),
         name = "Snap Axis:",
         default = "X"
     )
+    
     axesOffset = props.FloatVectorProperty(
         name = "Offset:",
         description = "",
@@ -45,10 +44,20 @@ class SnapToObject(bpy.types.Operator):
     @classmethod
     def poll(self, context):
         return len(context.selected_objects) == 2
+    
     def invoke(self, context, event):
-        return context.window_manager.invoke_props_dialog(self, width = 400)
+        #print(isSelectedValid())
+        if (isSelectedValid() == 0):
+            return context.window_manager.invoke_props_dialog(self, width = 400)
+        else:
+            self.report({"INFO"}, "All selected objects must be of type MESH")
+            return {"CANCELLED"}
+       
     def execute(self, context):
-        print(self.axesEnumProperty)
+        xoffset = self.axesOffset[0]
+        yoffset = self.axesOffset[1]
+        zoffset = self.axesOffset[2]
+        alignMesh(xoffset, yoffset, zoffset, self.axesEnum)
         return {"FINISHED"}
 
 # Activate operator for use in blender
