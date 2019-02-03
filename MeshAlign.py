@@ -2,25 +2,24 @@ import bpy
 from bpy import context
 from bpy import props
 
-def isSelectedValid():
-    for obj in context.selected_objects:
-        if obj.type != "MESH":
-            return 0
-    return 1
+def isSelectedValid(objOne, objTwo):
+    return objOne.type == "MESH" and objTwo.type == "MESH"
+
+def alignMesh(options, objOne, objTwo):
+    xoffset = options["xoffset"]
+    yoffset = options["yoffset"]
+    zoffset = options["zoffset"]
+    snapAxis = options["snapAxis"]
     
-def alignMesh(xoffset, yoffset, zoffset, snapAxis):
-    objOne = context.selected_objects[0]
-    objTwo = context.selected_objects[1]
-    
-    newLocationVector = [objTwo.location.x + xoffset, objTwo.location.y + yoffset, objTwo.location.z + zoffset]
+    newLocationVector = [objOne.location.x + xoffset, objOne.location.y + yoffset, objOne.location.z + zoffset]
     if (snapAxis == "X"):
-        newLocationVector[0] += objTwo.scale.x * 2
+        newLocationVector[0] += objOne.scale.x * 2
     elif(snapAxis == "Y"):
-        newLocationVector[1] += objTwo.scale.y * 2 
+        newLocationVector[1] += objOne.scale.y * 2 
     elif(snapAxis == "Z"):
-         newLocationVector[2] += objTwo.scale.z * 2
+         newLocationVector[2] += objOne.scale.z * 2
          
-    objOne.location = newLocationVector
+    objTwo.location = newLocationVector
 
 class SnapToObject(bpy.types.Operator):
     bl_idname = "view3d.snap_to_object"
@@ -42,20 +41,32 @@ class SnapToObject(bpy.types.Operator):
     # Check if user has selected exactly 2 objects
     @classmethod
     def poll(self, context):
-        return len(context.selected_objects) == 2
+        return len(context.selected_objects) > 1
     
     def invoke(self, context, event):
-        if (isSelectedValid()):
-            return context.window_manager.invoke_props_dialog(self)
-        else:
-            self.report({"INFO"}, "All selected objects must be of type MESH")
-            return {"CANCELLED"}
+        return context.window_manager.invoke_props_dialog(self)
        
     def execute(self, context):
         xoffset = self.axesOffset[0]
         yoffset = self.axesOffset[1]
         zoffset = self.axesOffset[2]
-        alignMesh(xoffset, yoffset, zoffset, self.axesEnum)
+        
+        i = 0
+        while(i < len(context.selected_objects) - 1):
+            j = i + 1
+            objOne = context.selected_objects[i]
+            objTwo = context.selected_objects[j]
+            if(isSelectedValid(objOne, objTwo)):
+                alignMesh({
+                    "xoffset":xoffset, 
+                    "yoffset":yoffset, 
+                    "zoffset":zoffset, 
+                    "snapAxis":self.axesEnum 
+                }, objOne, objTwo)
+                
+            i += 1
+            
+        #alignMesh(xoffset, yoffset, zoffset, self.axesEnum)
         return {"FINISHED"}
 
 # Activate operator for use in blender
