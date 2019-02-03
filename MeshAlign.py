@@ -37,9 +37,9 @@ def alignMesh(options, objOne, objTwo):
     
     newLocationVector = [objOne.location.x + xoffset, objOne.location.y + yoffset, objOne.location.z + zoffset]
     if (snapAxis == "X"):
-        newLocationVector[0] += objOne.dimensions[0]
+        newLocationVector[0] += objOne.dimensions.x/2 + objTwo.dimensions.x/2
     elif(snapAxis == "Y"):
-        newLocationVector[1] += objOne.dimensions[1]
+        newLocationVector[1] += objOne.dimensions.y/2 + objTwo.dimensions.y/2
     elif(snapAxis == "Z"):
          newLocationVector[2] += objOne.dimensions[2]
          
@@ -80,7 +80,10 @@ class SnapToObject(bpy.types.Operator):
         objOne = context.active_object
         objTwo = getSecondObject()
         
+        
         if(isSelectedValid(objOne, objTwo)):
+                setCursorToFloor(objOne)
+                setCursorToFloor(objTwo)
                 alignMesh({
                     "xoffset":xoffset, 
                     "yoffset":yoffset, 
