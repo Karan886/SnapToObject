@@ -13,11 +13,11 @@ def alignMesh(options, objOne, objTwo):
     
     newLocationVector = [objOne.location.x + xoffset, objOne.location.y + yoffset, objOne.location.z + zoffset]
     if (snapAxis == "X"):
-        newLocationVector[0] += objOne.scale.x * 2
+        newLocationVector[0] += objOne.dimensions[0]
     elif(snapAxis == "Y"):
-        newLocationVector[1] += objOne.scale.y * 2 
+        newLocationVector[1] += objOne.dimensions[1] 
     elif(snapAxis == "Z"):
-         newLocationVector[2] += objOne.scale.z * 2
+         newLocationVector[2] += objOne.dimensions[2]
          
     objTwo.location = newLocationVector
 
