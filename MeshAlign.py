@@ -46,7 +46,7 @@ class SnapToObject(bpy.types.Operator):
     
     def invoke(self, context, event):
         if (isSelectedValid()):
-            return context.window_manager.invoke_props_dialog(self, width = 400)
+            return context.window_manager.invoke_props_dialog(self)
         else:
             self.report({"INFO"}, "All selected objects must be of type MESH")
             return {"CANCELLED"}
