@@ -77,10 +77,8 @@ class SnapToObject(bpy.types.Operator):
         zoffset = self.axesOffset[2]
         
         i = 0
-        
         objOne = context.active_object
         objTwo = getSecondObject()
-        
         
         if(isSelectedValid(objOne, objTwo)):
                 dispOne = setOriginToCenter(objOne)
