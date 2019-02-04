@@ -83,13 +83,14 @@ class SnapToObject(bpy.types.Operator):
         if(isSelectedValid(objOne, objTwo)):
                 dispOne = setOriginToCenter(objOne)
                 dispTwo = setOriginToCenter(objTwo)
+                
                 alignMesh({
                     "xoffset":xoffset, 
                     "yoffset":yoffset, 
                     "zoffset":zoffset, 
                     "snapAxis":self.axesEnum 
-                }, objOne, objTwo)
-                
+                }, objOne, objTwo) 
+                 
                 restoreOrigin(objOne, dispOne)
                 restoreOrigin(objTwo, dispTwo)
         else:
