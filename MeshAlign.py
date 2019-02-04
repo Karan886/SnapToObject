@@ -42,8 +42,14 @@ def alignMesh(options, objOne, objTwo):
     elif(snapAxis == "Y"):
         newLocationVector[1] += objOne.dimensions.y/2 + objTwo.dimensions.y/2
     elif(snapAxis == "Z"):
-         newLocationVector[2] += objOne.dimensions.z/2 + objTwo.dimensions.z/2
-         
+        newLocationVector[2] += objOne.dimensions.z/2 + objTwo.dimensions.z/2
+    elif(snapAxis == "-X"):
+        newLocationVector[0] -= objOne.dimensions.x/2 + objTwo.dimensions.x/2
+    elif(snapAxis == "-Y"):
+        newLocationVector[1] -= objOne.dimensions.y/2 + objTwo.dimensions.y/2
+    elif(snapAxis == "-Z"):
+        newLocationVector[2] -= objOne.dimensions.z/2 + objTwo.dimensions.z/2
+               
     objTwo.location = newLocationVector
 
 class SnapToObject(bpy.types.Operator):
@@ -51,9 +57,14 @@ class SnapToObject(bpy.types.Operator):
     bl_label = "Snap To Object" 
     
     axesEnum = props.EnumProperty(
-        items = (("X", "x", "xoffset"), ("Y", "y", "yoffset"), ("Z", "z", "zoffset")),
-        name = "Snap Axis:",
-        default = "X"
+        items = (
+        ("X", "x", "snap to x-axis"), 
+        ("Y", "y", "snap to y-axis"), 
+        ("Z", "z", "snap to z-axis"),
+        ("-X", "-x", "snap to -x axis"),
+        ("-Y", "-y", "snap to -y axis"),
+        ("-Z", "-z", "snap to -z axis")
+        ),name = "Snap Axis:", default = "X"
     )
     
     axesOffset = props.FloatVectorProperty(
