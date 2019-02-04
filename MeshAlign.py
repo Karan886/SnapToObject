@@ -6,6 +6,7 @@ import mathutils
 from bpy import context
 from bpy import props
 
+print("----------")
 def isSelectedValid(objOne, objTwo):
     return objOne.type == "MESH" and objTwo.type == "MESH"
 
@@ -15,20 +16,21 @@ def getSecondObject():
         return list[1]
     return list[0]
 
-def setCursorToFloor(obj):
-    # Begin by setting cursor to center of mass
+# Returns the displacement so that origin can be restored
+def setOriginToCenter(obj):
     obj.select = True
-    bpy.ops.object.origin_set(type = "ORIGIN_CENTER_OF_MASS")
-    
-    # Calculate where the floor of the mesh is located and set the 3d cursor to that location
-    offset = mathutils.Vector((0, 0, obj.dimensions.z/2))
-    objFloor = obj.location - offset
-    context.scene.cursor_location = objFloor
-    
-    # Set origin of the mesh to its floor
-    bpy.ops.object.origin_set(type = "ORIGIN_CURSOR")
+    prevLoc = obj.location
+    bpy.ops.object.origin_set(type = "ORIGIN_CENTER_OF_MASS")  
+    displacement = prevLoc - obj.location
     obj.select = False
+    return displacement
 
+def restoreOrigin(obj, disp):
+    obj.select = True
+    context.scene.cursor_location = obj.location + disp
+    bpy.ops.object.origin_set(type = "ORIGIN_CURSOR")
+    obj.select = False 
+    
 def alignMesh(options, objOne, objTwo):
     xoffset = options["xoffset"]
     yoffset = options["yoffset"]
@@ -41,7 +43,7 @@ def alignMesh(options, objOne, objTwo):
     elif(snapAxis == "Y"):
         newLocationVector[1] += objOne.dimensions.y/2 + objTwo.dimensions.y/2
     elif(snapAxis == "Z"):
-         newLocationVector[2] += objOne.dimensions[2]
+         newLocationVector[2] += objOne.dimensions.z/2 + objTwo.dimensions.z/2
          
     objTwo.location = newLocationVector
 
@@ -82,14 +84,17 @@ class SnapToObject(bpy.types.Operator):
         
         
         if(isSelectedValid(objOne, objTwo)):
-                setCursorToFloor(objOne)
-                setCursorToFloor(objTwo)
+                dispOne = setOriginToCenter(objOne)
+                dispTwo = setOriginToCenter(objTwo)
                 alignMesh({
                     "xoffset":xoffset, 
                     "yoffset":yoffset, 
                     "zoffset":zoffset, 
                     "snapAxis":self.axesEnum 
                 }, objOne, objTwo)
+                
+                restoreOrigin(objOne, dispOne)
+                restoreOrigin(objTwo, dispTwo)
         else:
                 self.report({"WARNING"}, "Only aligned objects that are of type mesh.")
             
