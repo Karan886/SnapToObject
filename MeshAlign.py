@@ -6,7 +6,6 @@ import mathutils
 from bpy import context
 from bpy import props
 
-print("----------")
 def isSelectedValid(objOne, objTwo):
     return objOne.type == "MESH" and objTwo.type == "MESH"
 
