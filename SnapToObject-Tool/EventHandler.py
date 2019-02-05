@@ -8,21 +8,18 @@ class EventHandler(object):
     def __init__(self, handler_list):
         self.handlerList = handler_list
         self.handler_keys = []
-        print("initialized event handler object")
         
     def add(self, handler, key):
         if (key not in driver_namespace):
             driver_namespace[key] = handler
             self.handler_keys.append(key)
             self.handlerList.append(handler)
-            print("In the list.........................")
         else:
+            # To prevent the accidental addition of an event handler of the same key
             self.handlerList.remove(driver_namespace[key])
             del driver_namespace[key]
             self.handler_keys.remove(key)
-            print("Not in list............................")
-            
-        
+
     def toString(self):
         for key in self.handler_keys:
             print(key + "," + str(driver_namespace[key])) 
@@ -33,8 +30,3 @@ class EventHandler(object):
             self.handlerList.remove(handler)
             del driver_namespace[key]
             self.handler_keys.remove(key)
-                   
-    
-    
-        
-
