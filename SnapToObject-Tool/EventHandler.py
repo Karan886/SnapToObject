@@ -18,7 +18,9 @@ class EventHandler(object):
             # To prevent the accidental addition of an event handler of the same key
             self.handlerList.remove(driver_namespace[key])
             del driver_namespace[key]
-            self.handler_keys.remove(key)
+            if (key in self.handler_keys):
+                self.handler_keys.remove(key)
+                
 
     def toString(self):
         for key in self.handler_keys:
