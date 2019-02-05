@@ -20,7 +20,6 @@ class EventHandler(object):
             del driver_namespace[key]
             if (key in self.handler_keys):
                 self.handler_keys.remove(key)
-                
 
     def toString(self):
         for key in self.handler_keys:
