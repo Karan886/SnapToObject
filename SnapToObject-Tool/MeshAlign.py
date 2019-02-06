@@ -3,6 +3,7 @@
 
 import bpy
 import mathutils
+import LastModified
 from bpy import context
 from bpy import props
 
@@ -110,14 +111,18 @@ class SnapToObject(bpy.types.Operator):
         return {"FINISHED"}
 
 # Activate operator for use in blender
+lastModified = None
 def register():
+    global lastModified
     bpy.utils.register_class(SnapToObject)
-    
+    lastModified = LastModified.LastModified.getInstance()
+
 # Disable operator from blender
 def unregister():
+    global lastModified
     bpy.utils.unregister_class(SnapToObject)
-
+    lastModified.unattachEventHandlers()
 # Call register when script is run for testing
 if __name__ == "__main__":
     register()
-    
+
