@@ -16,10 +16,7 @@ class LastModified:
             LastModified.instance = self
 
 
-s = LastModified.getInstance()
-print(s)
-s = LastModified.getInstance()
-print(s)
+
 
 
 
