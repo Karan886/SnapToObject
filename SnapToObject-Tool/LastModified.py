@@ -2,6 +2,10 @@ import bpy
 import EventHandler
 from bpy import context
 
+handler_key = "01"
+def lastModifiedHandler(scene):
+    print(len(context.selected_objects))
+
 class LastModified:
     instance = None
     @staticmethod
@@ -11,9 +15,16 @@ class LastModified:
         return LastModified.instance
     def __init__(self):
         if (LastModified.instance != None):
-             raise Exception("This class is a singleton")
+            print("Instance already exists, removing event handler now...")
+            eventHandler.add(lastModifiedHandler, handler_key)
         else:
             LastModified.instance = self
+            eventHandler = EventHandler.EventHandler(bpy.app.handlers.scene_update_post)
+            eventHandler.add(lastModifiedHandler, handler_key)
+
+
+
+            
 
 
 
