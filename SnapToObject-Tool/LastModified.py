@@ -1,5 +1,6 @@
 import bpy
 import EventHandler
+import time
 from bpy import context
 
 #handler_key uniquely identifies each event handler that is registered in memory, so that we can easily manage them (ie. avoid duplicate event handlers)
@@ -8,10 +9,11 @@ handler_key = "01"
 lastModifiedMeshName = None
 def lastModifiedHandler(scene):
     global lastModifiedMeshName
-    activeObjName = context.active_object.name
-    if (activeObjName != lastModifiedMeshName):
-        print(activeObjName)
-        lastModifiedMeshName = activeObjName
+    activeObj = context.active_object
+    if (activeObj.name != lastModifiedMeshName):
+        print(activeObj.name)
+        print(time.time())
+        lastModifiedMeshName = activeObj.name
 
 class LastModified:
     __instance = None
