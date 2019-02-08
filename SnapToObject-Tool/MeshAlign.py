@@ -3,6 +3,7 @@
 
 import bpy
 import mathutils
+import LastModified
 from bpy import context
 from bpy import props
 
@@ -90,6 +91,7 @@ class SnapToObject(bpy.types.Operator):
         i = 0
         objOne = context.active_object
         objTwo = getSecondObject()
+        print(objOne['custom'])
         
         if(isSelectedValid(objOne, objTwo)):
                 dispOne = setOriginToCenter(objOne)
@@ -112,12 +114,11 @@ class SnapToObject(bpy.types.Operator):
 # Activate operator for use in blender
 def register():
     bpy.utils.register_class(SnapToObject)
-    
+
 # Disable operator from blender
 def unregister():
     bpy.utils.unregister_class(SnapToObject)
-
 # Call register when script is run for testing
 if __name__ == "__main__":
     register()
-    
+
