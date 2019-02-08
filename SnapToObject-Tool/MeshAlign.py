@@ -3,7 +3,6 @@
 
 import bpy
 import mathutils
-import LastModified
 from bpy import context
 from bpy import props
 
@@ -91,7 +90,6 @@ class SnapToObject(bpy.types.Operator):
         i = 0
         objOne = context.active_object
         objTwo = getSecondObject()
-        print(objOne['custom'])
         
         if(isSelectedValid(objOne, objTwo)):
                 dispOne = setOriginToCenter(objOne)
