@@ -96,7 +96,7 @@ class SnapToObject(bpy.types.Operator):
         objTwo = getSecondObject()
         
         if(isSelectedValid(objOne, objTwo)):
-                # caching 3D cursor location so that it can be restored after snap operation is complete
+                # Caching 3D cursor location so that it can be restored after snap operation is complete
                 cursorLoc = context.scene.cursor_location
                 cursorLoc = mathutils.Vector((cursorLoc.x, cursorLoc.y, cursorLoc.z))
         
