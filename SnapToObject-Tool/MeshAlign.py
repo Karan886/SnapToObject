@@ -18,7 +18,7 @@ def getSecondObject():
 # Returns the displacement so that origin can be restored
 def setOriginToCenter(obj):
     obj.select = True
-    prevLoc = obj.location
+    prevLoc = mathutils.Vector((obj.location.x, obj.location.y, obj.location.z))
     bpy.ops.object.origin_set(type = "ORIGIN_CENTER_OF_MASS")  
     displacement = prevLoc - obj.location
     obj.select = False
@@ -87,13 +87,15 @@ class SnapToObject(bpy.types.Operator):
         yoffset = self.axesOffset[1]
         zoffset = self.axesOffset[2]
         
-        i = 0
         objOne = context.active_object
         objTwo = getSecondObject()
         
         if(isSelectedValid(objOne, objTwo)):
+                print("--------")
                 dispOne = setOriginToCenter(objOne)
+                print(dispOne)
                 dispTwo = setOriginToCenter(objTwo)
+                print(dispTwo)
                 
                 alignMesh({
                     "xoffset":xoffset, 
