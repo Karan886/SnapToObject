@@ -30,6 +30,11 @@ def restoreOrigin(obj, disp):
     bpy.ops.object.origin_set(type = "ORIGIN_CURSOR")
     obj.select = False 
     
+def deselectAll():
+    objects = context.selected_objects
+    for obj in objects:
+        obj.select = False
+    
 def alignMesh(options, objOne, objTwo):
     xoffset = options["xoffset"]
     yoffset = options["yoffset"]
@@ -91,11 +96,15 @@ class SnapToObject(bpy.types.Operator):
         objTwo = getSecondObject()
         
         if(isSelectedValid(objOne, objTwo)):
-                print("--------")
+                # caching 3D cursor location so that it can be restored after snap operation is complete
+                cursorLoc = context.scene.cursor_location
+                cursorLoc = mathutils.Vector((cursorLoc.x, cursorLoc.y, cursorLoc.z))
+        
+                # Deselecting all selected objects so that we can manipulate origin and restore
+                deselectAll()
+                
                 dispOne = setOriginToCenter(objOne)
-                print(dispOne)
                 dispTwo = setOriginToCenter(objTwo)
-                print(dispTwo)
                 
                 alignMesh({
                     "xoffset":xoffset, 
@@ -106,6 +115,10 @@ class SnapToObject(bpy.types.Operator):
                  
                 restoreOrigin(objOne, dispOne)
                 restoreOrigin(objTwo, dispTwo)
+                
+                # Restore 3D cursor location
+                context.scene.cursor_location = cursorLoc
+                
         else:
                 self.report({"WARNING"}, "Only aligned objects that are of type mesh.")
             
