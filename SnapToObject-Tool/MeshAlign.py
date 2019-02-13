@@ -56,6 +56,44 @@ def alignMesh(options, objOne, objTwo):
         newLocationVector[2] -= objOne.dimensions.z/2 + objTwo.dimensions.z/2
                
     objTwo.location = newLocationVector
+    
+def snapMeshToLocation(offset, snapDirection):
+    xoffset = offset["x"]
+    yoffset = offset["y"]
+    zoffset = offset["z"]
+    
+    objOne = context.active_object
+    objTwo = getSecondObject()
+    
+    if(isSelectedValid(objOne, objTwo)):
+    # caching 3D cursor location so that it can be restored after snap operation is complete
+        cursorLoc = context.scene.cursor_location
+        cursorLoc = mathutils.Vector((cursorLoc.x, cursorLoc.y, cursorLoc.z))
+        
+     # Deselecting all selected objects so that we can manipulate origin and restore
+        deselectAll()
+                
+        dispOne = setOriginToCenter(objOne)
+        dispTwo = setOriginToCenter(objTwo)
+                
+        alignMesh({
+            "xoffset":xoffset, 
+            "yoffset":yoffset, 
+            "zoffset":zoffset, 
+            "snapAxis":snapDirection 
+            }, 
+            objOne, objTwo) 
+                 
+        restoreOrigin(objOne, dispOne)
+        restoreOrigin(objTwo, dispTwo)
+                
+        # Restore 3D cursor location
+        context.scene.cursor_location = cursorLoc
+                
+    else:
+                self.report({"WARNING"}, "Only aligned objects that are of type mesh.")
+            
+  
 
 class SnapToObject(bpy.types.Operator):
     bl_idname = "view3d.snap_to_object"
@@ -69,7 +107,9 @@ class SnapToObject(bpy.types.Operator):
         ("-X", "-x", "snap to -x axis"),
         ("-Y", "-y", "snap to -y axis"),
         ("-Z", "-z", "snap to -z axis")
-        ),name = "Snap Axis:", default = "X"
+        ),
+        name = "Snap Axis:", 
+        default = "X"
     )
     
     axesOffset = props.FloatVectorProperty(
@@ -85,43 +125,16 @@ class SnapToObject(bpy.types.Operator):
         return len(context.selected_objects) == 2
     
     def invoke(self, context, event):
+        offset = {
+            "x":self.axesOffset[0],
+            "y":self.axesOffset[1],
+            "z":self.axesOffset[2]
+        }
+        snapMeshToLocation(offset, self.axesEnum)
         return context.window_manager.invoke_props_dialog(self)
        
     def execute(self, context):
-        xoffset = self.axesOffset[0]
-        yoffset = self.axesOffset[1]
-        zoffset = self.axesOffset[2]
         
-        objOne = context.active_object
-        objTwo = getSecondObject()
-        
-        if(isSelectedValid(objOne, objTwo)):
-                # caching 3D cursor location so that it can be restored after snap operation is complete
-                cursorLoc = context.scene.cursor_location
-                cursorLoc = mathutils.Vector((cursorLoc.x, cursorLoc.y, cursorLoc.z))
-        
-                # Deselecting all selected objects so that we can manipulate origin and restore
-                deselectAll()
-                
-                dispOne = setOriginToCenter(objOne)
-                dispTwo = setOriginToCenter(objTwo)
-                
-                alignMesh({
-                    "xoffset":xoffset, 
-                    "yoffset":yoffset, 
-                    "zoffset":zoffset, 
-                    "snapAxis":self.axesEnum 
-                }, objOne, objTwo) 
-                 
-                restoreOrigin(objOne, dispOne)
-                restoreOrigin(objTwo, dispTwo)
-                
-                # Restore 3D cursor location
-                context.scene.cursor_location = cursorLoc
-                
-        else:
-                self.report({"WARNING"}, "Only aligned objects that are of type mesh.")
-            
         return {"FINISHED"}
 
 # Activate operator for use in blender
