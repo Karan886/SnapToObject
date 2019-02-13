@@ -8,6 +8,7 @@ from bpy import props
 
 objOne = None
 objTwo = None
+initLocation = None
 
 def isSelectedValid(objOne, objTwo):
     return objOne.type == "MESH" and objTwo.type == "MESH"
@@ -39,6 +40,8 @@ def deselectAll():
         obj.select = False
     
 def alignMesh(options, objOne, objTwo):
+    global initLocation
+    
     xoffset = options["xoffset"]
     yoffset = options["yoffset"]
     zoffset = options["zoffset"]
@@ -59,6 +62,7 @@ def alignMesh(options, objOne, objTwo):
         newLocationVector[2] -= objOne.dimensions.z/2 + objTwo.dimensions.z/2
                
     objTwo.location = newLocationVector
+    initLocation = newLocationVector
     
 def snapMeshToLocation(objOne, objTwo, offset, snapDirection):
     xoffset = offset["x"]
@@ -96,11 +100,12 @@ def snapMeshToLocation(objOne, objTwo, offset, snapDirection):
 def onOffsetUpdated(self, context):
     global objOne
     global objTwo
+    global initLocation
     
     objTwo.location = mathutils.Vector((
-        objOne.location.x + self.axesOffset[0],
-        objOne.location.y + self.axesOffset[1],
-        objOne.location.z + self.axesOffset[2]
+        initLocation[0] + self.axesOffset[0],
+        initLocation[1] + self.axesOffset[1],
+        initLocation[2] + self.axesOffset[2]
     ))
 
 class SnapToObject(bpy.types.Operator):
@@ -154,6 +159,7 @@ class SnapToObject(bpy.types.Operator):
         
         objOne = None
         objTwo = None
+        initLocation = None
         return {"FINISHED"}
 
 # Activate operator for use in blender
