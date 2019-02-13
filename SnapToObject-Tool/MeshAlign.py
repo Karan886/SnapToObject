@@ -8,6 +8,7 @@ from bpy import props
 
 objOne = None
 objTwo = None
+# Store initial resuting location of snap operation to calculate offset updates
 initLocation = None
 
 def isSelectedValid(objOne, objTwo):
