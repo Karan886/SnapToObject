@@ -6,6 +6,9 @@ import mathutils
 from bpy import context
 from bpy import props
 
+objOne = None
+objTwo = None
+
 def isSelectedValid(objOne, objTwo):
     return objOne.type == "MESH" and objTwo.type == "MESH"
 
@@ -57,13 +60,10 @@ def alignMesh(options, objOne, objTwo):
                
     objTwo.location = newLocationVector
     
-def snapMeshToLocation(offset, snapDirection):
+def snapMeshToLocation(objOne, objTwo, offset, snapDirection):
     xoffset = offset["x"]
     yoffset = offset["y"]
     zoffset = offset["z"]
-    
-    objOne = context.active_object
-    objTwo = getSecondObject()
     
     if(isSelectedValid(objOne, objTwo)):
     # caching 3D cursor location so that it can be restored after snap operation is complete
@@ -93,7 +93,15 @@ def snapMeshToLocation(offset, snapDirection):
     else:
                 self.report({"WARNING"}, "Only aligned objects that are of type mesh.")
             
-  
+def onOffsetUpdated(self, context):
+    global objOne
+    global objTwo
+    
+    objTwo.location = mathutils.Vector((
+        objOne.location.x + self.axesOffset[0],
+        objOne.location.y + self.axesOffset[1],
+        objOne.location.z + self.axesOffset[2]
+    ))
 
 class SnapToObject(bpy.types.Operator):
     bl_idname = "view3d.snap_to_object"
@@ -116,6 +124,7 @@ class SnapToObject(bpy.types.Operator):
         name = "Offset:",
         description = "",
         default = (0, 0, 0),
+        update = onOffsetUpdated,
         step = 1
     )
     
@@ -125,16 +134,26 @@ class SnapToObject(bpy.types.Operator):
         return len(context.selected_objects) == 2
     
     def invoke(self, context, event):
+        global objOne
+        global objTwo
+        
         offset = {
             "x":self.axesOffset[0],
             "y":self.axesOffset[1],
             "z":self.axesOffset[2]
         }
-        snapMeshToLocation(offset, self.axesEnum)
+        objOne = context.active_object
+        objTwo = getSecondObject()
+        snapMeshToLocation(objOne, objTwo, offset, self.axesEnum)
+
         return context.window_manager.invoke_props_dialog(self)
        
     def execute(self, context):
+        global objOne
+        global objTwo
         
+        objOne = None
+        objTwo = None
         return {"FINISHED"}
 
 # Activate operator for use in blender
