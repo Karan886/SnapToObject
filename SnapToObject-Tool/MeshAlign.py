@@ -108,6 +108,18 @@ def onOffsetUpdated(self, context):
         initLocation[2] + self.axesOffset[2]
     ))
 
+def onEnumUpdated(self, context):
+    global objOne
+    global objTwo
+    
+    offset = {
+        "x":self.axesOffset[0],
+        "y":self.axesOffset[1],
+        "z":self.axesOffset[2]
+    }
+    
+    snapMeshToLocation(objOne, objTwo, offset, self.axesEnum)
+    
 class SnapToObject(bpy.types.Operator):
     bl_idname = "view3d.snap_to_object"
     bl_label = "Snap To Object" 
@@ -122,7 +134,8 @@ class SnapToObject(bpy.types.Operator):
         ("-Z", "-z", "snap to -z axis")
         ),
         name = "Snap Axis:", 
-        default = "X"
+        default = "X",
+        update = onEnumUpdated
     )
     
     axesOffset = props.FloatVectorProperty(
