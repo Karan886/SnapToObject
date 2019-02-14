@@ -4,7 +4,7 @@ This project is a small tool made for a 3D art and animation suite called "Blend
 This tool eases an artist's job by "snapping" selected meshes together - that is, properly stacking them along the specified axis. Currently, this tool works for every two selected meshes (so you cannot stack more than two meshes at a time). The last selected mesh will maintain its location in 3D space, while the first selected mesh will be pulled towards it. Additionally, this tool allows some room for flexibility by allowing artists to add offset values. For example, when each building in the city block have some space between them, you can stack them with some offset between them.
 
 
-![Demo]https://user-images.githubusercontent.com/8737063/52754260-bb9db280-2fae-11e9-85ae-666bbd135b84.gif
+https://user-images.githubusercontent.com/8737063/52754260-bb9db280-2fae-11e9-85ae-666bbd135b84.gif
 
 
 Main issues:
