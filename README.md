@@ -4,10 +4,6 @@ This project is a small tool made for a 3D art and animation suite called "Blend
 First look at the tool: 
 https://drive.google.com/open?id=1XZWzhMYMYe8kgVR4VJOxroGvKPBnxYR-
 
-<video width="320" height="240" controls>
-  <source src="https://drive.google.com/open?id=1XZWzhMYMYe8kgVR4VJOxroGvKPBnxYR-" type="video/mov">
-Your browser does not support the video tag.
-</video>
 Main issues:
 
 1. To implement this tool to work on more than two meshes at a time, we need to know the order in which the artist selected 
