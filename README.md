@@ -43,6 +43,6 @@ Open a new project and create a text editor window in the viewport, if you don't
 </li>
 <li>Upload the .py file and run the script</li>
 <li>Once the script runs successfully, you can shift select any two object on the <em><b>3D viewport</b></em></li>
-<li>Press space bar to bring up search menu and look for <em><b>"SnapToObject"</b></em></li>
+<li>Press space bar to bring up search menu and look for <em><b>"Snap To Object"</b></em></li>
 <li>You can check out the <strong>Demo</strong> section of this document for assistance</li>
 </ol>
