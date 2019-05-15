@@ -36,7 +36,7 @@ sub-tool for this, if possible).
 <ol>
 <li>Download <cite><a href="https://www.blender.org/download/"><b>Blender 3D</b></a></cite>, if you havn't done already</li>
 <li>
-Clone the repository or download the file <cite><a href="https://github.com/Karan886/Blender-SnapToObject-AddOn/blob/master/SnapToObject-Tool/MeshAlign.py"><b>MeshAlign.py</b></a></cite>
+Clone the repository or download the file <cite><a href="https://github.com/Karan886/Blender-SnapToObject-AddOn/blob/master/SnapToObject-Tool/MeshAlign.py"><b>MeshAlign.py</b></a></cite> which cab be found <cite><a href="https://github.com/Karan886/Blender-SnapToObject-AddOn/tree/master/SnapToObject-Tool"><b>here</b></a></cite>
 </li>
 <li>
 Open a new project and create a text editor window in the viewport, if you don't know how to do this you can check out <cite><a href="https://www.blender.org/support/tutorials/"><b>free tutorials</b></a></cite> on the <cite><a href="https://www.blender.org"><b>website</b></a></cite>
