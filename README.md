@@ -21,7 +21,7 @@ The tool allows some room for flexibility by allowing artists to add <em><b>offs
 
 <hr/>
 
-<h2>Main Issues</h2>
+<h2>Other Issues</h2>
 <ul>
 <li>
 To implement this tool to work on more than two meshes at a time, we need to know the order in which the artist selected 
