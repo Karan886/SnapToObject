@@ -1,6 +1,6 @@
 <h1>Snap To Object Add-On</h1>
 <p>
-This project is a small tool made for a <em>3D art and animation</em> suite called <em><b>"Blender"</b></em>.
+This project is a small tool made for a <em>3D art and animation</em> suite called <cite><a href="https://www.blender.org"><b>"Blender 3D"</b></a></cite>.
 </p>
 <ul>
 <li>
@@ -13,7 +13,6 @@ The <em>tool</em> eases an artist's job by <em><b>"snapping"</em></b> selected m
 The tool allows some room for flexibility by allowing artists to add <em><b>offset values</b></em>. For example, when each building in the city block have some space between them, you can stack them with some offset between them.
 </li>
 </ul>
-
 
 <hr/>
 
@@ -29,4 +28,21 @@ To implement this tool to work on more than two meshes at a time, we need to kno
 those meshes in the first place. This information is not available with the blender python API - (looking into implementing a 
 sub-tool for this, if possible).
 </li>
+</ol>
+
+<hr/>
+
+<h2>Testing</h2>
+<ol>
+<li>Download <cite><a href="https://www.blender.org/download/"><b>Blender 3D</b></a></cite>, if you havn't done already</li>
+<li>
+Clone the repository or download the file <cite><a href="https://github.com/Karan886/Blender-SnapToObject-AddOn/blob/master/SnapToObject-Tool/MeshAlign.py"><b>MeshAlign.py</b></a></cite>
+</li>
+<li>
+Open a new project and create a text editor window in the viewport, if you don't know how to do this you can check out <cite><a href="https://www.blender.org/support/tutorials/"><b>free tutorials</b></a></cite> on the <cite><a href="https://www.blender.org"><b>website</b></a></cite>
+</li>
+<li>Upload the .py file and run the script</li>
+<li>Once the script runs successfully, you can shift select any two object on the <em><b>3D viewport</b></em></li>
+<li>Press space bar to bring up search menu and look for <em><b>"SnapToObject"</b></em></li>
+<li>You can check out the <strong>Demo</strong> section of this document for assistance</li>
 </ol>
