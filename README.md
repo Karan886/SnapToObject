@@ -22,13 +22,13 @@ The tool allows some room for flexibility by allowing artists to add <em><b>offs
 <hr/>
 
 <h2>Main Issues</h2>
-<ol>
+<ul>
 <li>
 To implement this tool to work on more than two meshes at a time, we need to know the order in which the artist selected 
 those meshes in the first place. This information is not available with the <cite><a href="https://docs.blender.org/api/2.79/"><b>Blender Python API</b></a></cite> - (looking into implementing a 
 sub-tool for this, if possible).
 </li>
-</ol>
+</ul>
 
 <hr/>
 
