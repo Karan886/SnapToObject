@@ -10,7 +10,7 @@ Imagine a scenario where you are an artist working on multiple 3D models that ne
 The <em>tool</em> eases an artist's job by <em><b>"snapping"</em></b> selected meshes together - that is, properly stacking them along the specified axis. Currently, this tool works for every <em><b>two selected meshes</b></em>(so you cannot stack more than two meshes at a time). The last selected mesh will maintain its location in <em>3D space</em>, while the first selected mesh will be pulled towards it. 
 </li>
 <li>
-The tool allows some room for flexibility by allowing artists to add <em><b>offset values</b></em>. For example, when each building in the city block have some space between them, you can stack them with some offset between them.
+The tool allows some room for flexibility by allowing artists to add <em><b>offset values</b></em>. For example, to add space between buildings in a city block with ease, you can stack them with some offset between them.
 </li>
 </ul>
 
